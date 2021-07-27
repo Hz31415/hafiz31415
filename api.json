@@ -1,0 +1,2013 @@
+openapi: '3.0.0'
+info:
+  version: 0.0.3
+  title: Zam.io API
+  description: "The Zam.io API that serves for creating and managing Your wallet:
+
+• Registration and account management
+
+• Cryptocurrency buy/sell orders
+
+• Working with external wallets
+
+• Ability to update rate information"
+servers:
+  - url: https://zam.io
+
+paths:
+  '/api/amount':
+    get:
+      summary: Balance check on all connected wallets
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AmountResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/auth':
+    post:
+      summary: New user registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequestData'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/CodeResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/auth/change':
+    post:
+      summary: Password change
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeRequestData'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/auth/documents/{documentId}':
+    get:
+      summary: Request for security agreement
+      parameters:
+        - in: path
+          name: documentId
+          description: Document ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: '173e4567-e89b-12d3-a456-426614174000'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/*:
+              schema:
+                type: string
+                description: Document content
+                format: binary
+                example: 'Agreement file'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/auth/delete':
+    delete:
+      summary: Delete account with SMS verification
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/auth/privateKey':
+    post:
+      summary: Request for Zam wallet’s private key generation
+      security:
+        - bearerAuth: [ ]
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/PrivateKeyResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/auth/token':
+    post:
+      summary: Update token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequestData'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/TokenResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/calculation':
+    get:
+      summary: Request to get approximate rate and cost of transaction. 
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: priority
+          in: query
+          description: Transaction priority (default value - MEDIUM)
+          required: false
+          schema:
+            type: string
+            enum:
+            - 'TOP'
+            - 'MEDIUM'
+        - name: blockchainFrom
+          in: query
+          description: Source platform name 
+          required: true
+          schema:
+            type: string
+        - name: blockchainTo
+          in: query
+          description: Destiantion platform name
+          required: true
+          schema:
+            type: string
+        - name: addressContractFrom
+          in: query
+          description: Contract adrress on source wallet
+          required: false
+          schema:
+            type: string
+        - name: addressContractTo
+          in: query
+          description: Contract address on destiantion wallet
+          required: false
+          schema:
+            type: string
+        - name: adressFrom
+          in: query
+          description: Soruce wallet address
+          required: true
+          schema:
+            type: string
+        - name: addressTo
+          in: query
+          description: Destiantion wallet address
+          required: true
+          schema:
+            type: string
+        - name: amount
+          in: query
+          description: Cryptrocurrency amount
+          required: true
+          schema:
+            type: string
+        - name: paymentRestrictionTransaction
+          in: query
+          description: Payment restriction for transaction
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/PredictionTransactionResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/history':
+    get:
+      summary: Transaction history for selected wallet
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/HistoryResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/notifications':
+    get:
+      summary: Update notifications
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: offset
+          in: query
+          description: Startpoint of notification's displaying list
+          required: false
+          schema:
+            type: integer            
+            minimum: 0
+            default: 0
+        - name: limit
+          in: query
+          description: Desired amount of notifications for one request
+          required: false
+          schema:
+            type: integer            
+            minimum: 1
+            maximum: 100
+            default: 10
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/NotificationListData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/order':
+    get:
+      summary: Request for transaction order
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: priority
+          in: query
+          description: Transaction priority (default value - MEDIUM)
+          required: false
+          schema:
+            type: string
+            enum:
+            - 'TOP'
+            - 'MEDIUM'
+        - name: blockchainFrom
+          in: query
+          description: Source platform name
+          required: true
+          schema:
+            type: string
+        - name: blockchainTo
+          in: query
+          description: Destination platform name
+          required: true
+          schema:
+            type: string
+        - name: addressContractFrom
+          in: query
+          description: Contract adrress on source wallet
+          required: false
+          schema:
+            type: string
+        - name: addressContractTo
+          in: query
+          description: Contract address on destiantion wallet
+          required: false
+          schema:
+            type: string
+        - name: adressFrom
+          in: query
+          description: Source wallet address
+          required: true
+          schema:
+            type: string
+        - name: addressTo
+          in: query
+          description: Destination wallet address
+          required: true
+          schema:
+            type: string
+        - name: amount
+          in: query
+          description: Cryptrocurrency amount
+          required: true
+          schema:
+            type: string
+        - name: paymentRestrictionTransaction
+          in: query
+          description: Payment restriction for transaction
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/GetOrderTransactionResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/order/purchase':
+    post:
+      summary: Order for cryptocurrency buy
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: priority
+          in: query
+          description: Transaction priority (default value - MEDIUM)
+          required: false
+          schema:
+            type: string
+            enum:
+            - 'TOP'
+            - 'MEDIUM'
+        - name: blockchainTo
+          in: query
+          description: Destiantion platform name
+          required: true
+          schema:
+            type: string
+
+        - name: addressContractTo
+          in: query
+          description: Contract address on destiantion wallet
+          required: false
+          schema:
+            type: string
+
+        - name: addressTo
+          in: query
+          description: Destiantion wallet address
+          required: true
+          schema:
+            type: string
+
+        - name: amount
+          in: query
+          description: Cryptrocurrency amount to buy
+          required: true
+          schema:
+            type: string
+        - name: paymentRestrictionTransaction
+          in: query
+          description: Payment restriction for transaction
+          required: false
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/GetOrderResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/order/sale':
+    post:
+      summary: Order for cryptocurrency sale
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: priority
+          in: query
+          description: Transaction priority (default value - MEDIUM)
+          required: false
+          schema:
+            type: string
+            enum:
+            - 'TOP'
+            - 'MEDIUM'
+        - name: blockchainFrom
+          in: query
+          description: Source platform name
+          required: true
+          schema:
+            type: string
+        - name: blockchainTo
+          in: query
+          description: destiantion platform name (measured wallet on Zam side)
+          required: true
+          schema:
+            type: string
+          
+        - name: addressContractFrom
+          in: query
+          description: Contract adrress on source wallet
+          required: false
+          schema:
+            type: string
+        - name: addressContractTo
+          in: query
+          description: Contract address on destiantion wallet (measured wallet on Zam side)
+          required: false
+          schema:
+            type: string
+          
+        - name: adressFrom
+          in: query
+          description: Soruce wallet address
+          required: true
+          schema:
+            type: string
+        - name: addressTo
+          in: query
+          description: Destiantion wallet address (measured wallet on Zam side)
+          required: true
+          schema:
+            type: string
+          
+        - name: amount
+          in: query
+          description: Cryptrocurrency amount to sell
+          required: true
+          schema:
+            type: string
+        - name: paymentRestrictionTransaction
+          in: query
+          description: Payment restriction for transaction
+          required: false
+          schema:
+            type: string
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountDetails'
+          
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/GetOrderTransactionResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/otherCrypto':
+    post:
+      summary: Enable external wallet
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/otherCryptoRequestData'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+    delete:
+      summary: Disable external wallet
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: blockchain
+          in: query
+          description: Platform name
+          required: true
+          schema:
+            type: string
+        - name: addressContract
+          in: query
+          description: Wallet's contract address
+          required: false
+          schema:
+            type: string
+        - name: address
+          in: query
+          description: Wallet's address
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/rate':
+    get:
+      summary: Get top50 cryptocurrencies' information (to Zam/dollar rate)
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RateResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/rate/dollar':
+    get:
+      summary: Selected cryptocurrency to dollar rate
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: currency
+          in: query
+          description: Cryptocurrency shortname
+          required: true
+          schema:
+            type: string
+        - name: blockchain
+          in: query
+          description: Platform name
+          required: true
+          schema:
+            type: string
+        - name: addressContract
+          in: query
+          description: Cryptocurrency contract address
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/RateResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+  '/api/rate/zam':
+    get:
+      summary: Selected cryptocurrency to Zam rate
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: currency
+          in: query
+          description: Cryptocurrency shortname
+          required: true
+          schema:
+            type: string
+        - name: blockchain
+          in: query
+          description: Platform name
+          required: true
+          schema:
+            type: string
+        - name: addressContract
+          in: query
+          description: Cryptocurrency contract address
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    $ref: '#/components/schemas/RateResponseData'
+        '400':
+          description: Invalid input format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '408':
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+        '503':
+          description: Service is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: object
+                    properties: {}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Meta:
+      description: Responce metadata
+      type: object
+      properties:
+        status:
+          type: string
+          description: Responce status (FE reaction depends on status)
+          example: OK
+          enum:
+          - OK
+          - ERROR
+          - UNKNOWN_ERROR
+        message:
+          type: string
+          description: Message (OK - for 200, ERROR - for 400 and 500, UNKNOWN_ERROR - System exception), BE stores and returns message for each status
+          enum:
+          - OK - Success
+          - ERROR - Incorrect input data
+          - ERROR - Authorization error
+          - ERROR - Incorrect data type
+          - ERROR - Not found
+          - ERROR - Request timeout
+          - ERROR - Internal server error
+          - ERROR - Service is unreachable
+          - UNKNOWN_ERROR - Uknown error
+          example: ERROR - Authorization error
+    AmountResponseData:
+      type: object
+      description: баланс криптовалютного кошелька
+      required:
+        - blockchain
+        - address
+        - currency
+        - amount
+      properties:
+        blockchain:
+          type: string
+          description: Platform name
+        addressContract:
+          type: string
+          description: Token's contract address
+        address:
+          type: string
+          description: Wallet's address
+        currency:
+          type: string
+          description: Currency shortname
+        amount:
+          type: string
+          description: Current balance
+    RegistrationRequestData:
+      type: object
+      description: New user registration
+      required:
+        - phone
+        - code
+      properties:
+        phone:
+          type: string
+          pattern: '^\d{10,16}$'
+          description: User's phone number (add zeroes to end, in the case of less than 10 count of characters)
+        fullName:
+          type: string
+          description: User's full name
+        refCode:
+          type: string
+          description: Referral code
+        codeRequest:
+          $ref: '#/components/schemas/CodeRequestData'
+    CodeRequestData:
+      type: object
+      description: Verification code request
+      required:
+        - phone
+      properties:
+        phone:
+          type: string
+          pattern: '^\d{10,16}$'
+          description: User's phone number (add zeroes to end, in the case of less than 10 count of characters)
+    CodeResponseData:
+      type: object
+      description: Verification code request's response
+      required:
+        - passportMessage
+      properties:
+        passportMessage:
+          type: string
+          description: Passport phrase
+        agreement:
+          $ref: '#/components/schemas/DocumentData'
+    DocumentData:
+      type: object
+      description: Security agreement for user to accept
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: '173e4567-e89b-12d3-a456-426624174000'
+        name:
+          type: string
+          description: File name
+          example: 'Data confidentiality agreement'
+        url:
+          type: string
+          description: File link example
+          example: '/api/auth/documents/173e4567-e89b-12d3-a456-426614174000'
+    ChangeRequestData:
+      type: object
+      description: Password change request
+      required:
+        - oldPassword
+        - newPassword
+      properties:
+        oldPassword:
+          type: string
+          description: Old password's hash
+        newPassword:
+          type: string
+          description: New password's hash
+    PrivateKeyResponseData:
+      type: object
+      description: Zam wallet's private key
+      required:
+        - privateKey
+      properties:
+        privateKey:
+          type: string
+          description: Zam wallet's private key
+    TokenRequestData:
+      type: object
+      description: Request for authorization token (Last expired token + Device’s UUID, in hte case of mismatch - User’s login/Hash of user’s password)
+      properties:
+        token:
+          type: string
+          description: Last expired token
+        deviceId:
+          type: string
+          description: Device’s UUID
+        login:
+          type: string
+          description: User’s login
+        password:
+          type: string
+          description: Hash of user’s password
+    TokenResponseData:
+      type: object
+      description: Response of authorization token request
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: Authorization token
+        agreement:
+          $ref: '#/components/schemas/DocumentData'
+    PredictionTransactionResponseData:
+      type: object
+      description: Transaction rate and cost prediction
+      required:
+        - blockchainFrom
+        - blockchainTo
+        - addressFrom
+        - addressTo
+        - currencyFrom
+        - currencyTo
+        - amount
+        - commission
+        - dateActual
+      properties:
+        blockchainFrom:
+          type: string
+          description: Source platform name
+        blockchainTo:
+          type: string
+          description: Destination platform name
+        addressContractFrom:
+          type: string
+          description: Contract adrress on source wallet
+        addressContractTo:
+          type: string
+          description: Contract address on destiantion wallet
+        adressFrom:
+          type: string
+          description: Soruce wallet address
+        addressTo:
+          type: string
+          description: Destination wallet address
+        currency:
+          type: string
+          description: Cryptocurrency shortname
+        amount:
+          type: string
+          description: Cryptocurrency amount
+        commission:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommissionData'
+        dateActual:
+          type: string
+          description: Prediction date:time
+    CommissionData:
+      type: object
+      description: Information about transaction commission
+      required:
+        - paymentTransaction
+        - commission
+      properties:
+        paymentTransaction:
+          type: string
+          description: Approximate transaction payment cost
+        commissionTransaction:
+          type: string
+          description: Transaction commission
+    HistoryResponseData:
+      type: object
+      description: Transaction information
+      required:
+        - blockchainFrom
+        - blockchainTo
+        - addressFrom
+        - addressTo
+        - currencyFrom
+        - currencyTo
+        - amount
+        - paymentTransaction
+        - commission
+        - dateCreate
+        - dateConfirm
+      properties:
+        blockchainFrom:
+          type: string
+          description: Source platform name
+        blockchainTo:
+          type: string
+          description: Destination platform name
+        addressContractFrom:
+          type: string
+          description: Contract adrress on source wallet
+        addressContractTo:
+          type: string
+          description: Contract address on destiantion wallet
+        adressFrom:
+          type: string
+          description: Soruce wallet address
+        addressTo:
+          type: string
+          description: Destination wallet address
+        currency:
+          type: string
+          description: Cryptocurrency shortname
+        amount:
+          type: string
+          description: Cryptocurrency amount
+        commission:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommissionData'
+        dateCreate:
+          type: string
+          description: Transaction creation date:time
+        dateConfirm:
+          type: string
+          description: Transaction close date:time
+    NotificationListData:
+      type: object
+      properties:
+        notifications:
+          description: Список уведомлений с пагинацией
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationData'
+        pagination:
+          $ref: '#/components/schemas/PaginationData'
+    PaginationData:
+      type: object
+      description: Пагинация
+      properties:
+        offset:
+          type: integer
+          description: Startpoint of notification's displaying list
+          example: 0
+        limit:
+          type: integer
+          description: Desired amount of notifications for one request
+          example: 10
+        total:
+          type: integer
+          description: Total count of notifications
+          example: 100
+    NotificationData:
+      description: Notification
+      type: object
+      properties:
+        title:
+          type: string
+          description: Header name
+          example: 'Ьщтун зкгсрфыу'
+        text:
+          description: Notification content
+          type: string
+          example: 'Your wallet was purchased for 2.1 ETH (address ...), from address ... at 09:02:57 18.06.2021.'
+        date:
+          description: Transaction creation date:time
+          type: string
+          format: date-time
+          example: '18-06-2021T09:02:57+03:00'
+        read:
+          description: Read receipt
+          type: boolean
+          example: true
+    GetOrderTransactionResponseData:
+      type: object
+      description: Request for transaction order generation
+      required:
+        - blockchainFrom
+        - blockchainTo
+        - addressFrom
+        - addressTo
+        - currencyFrom
+        - currencyTo
+        - amount
+        - dateCreate
+      properties:
+        blockchainFrom:
+          type: string
+          description: Source platform name
+        blockchainTo:
+          type: string
+          description: Destination platform name
+        addressContractFrom:
+          type: string
+          description: Contract adrress on source wallet
+        addressContractTo:
+          type: string
+          description: Contract address on destiantion wallet
+        adressFrom:
+          type: string
+          description: Soruce wallet address
+        addressTo:
+          type: string
+          description: Destionation wallet address
+        currency:
+          type: string
+          description: Cryptocurrency shortname
+        amount:
+          type: string
+          description: Cryptrocurrency amount
+        dateCreate:
+          type: string
+          description: Order creation date:time
+    GetOrderResponseData:
+      type: object
+      description: Order for cyptocurrency buy and reference to transaction order
+      required:
+        - blockchainTo
+        - addressTo
+        - currencyTo
+        - amount
+        - dateCreate
+        - order
+      properties:
+        blockchainTo:
+          type: string
+          description: Destination platform name
+        addressContractTo:
+          type: string
+          description: Contract adrress on source wallet
+        addressTo:
+          type: string
+          description: Destionation wallet address
+        currency:
+          type: string
+          description: Cruptocurrency shortname
+        amount:
+          type: string
+          description: Cryptrocurrency amount
+        dateCreate:
+          type: string
+          description: Order creation date:time
+        order:
+          type: string
+          description: Reference to transaction order for payment
+    AccountDetails:
+      type: object
+      description: Account requisites (наборы вариантов помечены в конце цифрами, для каждого набора все атрибуты обязательны)
+      properties:
+        spbPhone1:
+          type: string
+          description: номер телефона для СБП
+        spbName1:
+          type: string
+          description: наименование банка для СБП (FE должен сам запросить список доступных и вернуть точное наименование)
+        visaCardNumber2:
+          type: string
+          description: номер карты VISA
+        visaName2:
+          type: string
+          description: ФИО получателя
+        masterCardNumber3:
+          type: string
+          description: номер карты MasterCard
+        masterName3:
+          type: string
+          description: ФИО получателя
+        bankAccountPaymentAccount4:
+          type: string
+          description: расчетный счет банке
+        bankAccountBIK4:
+          type: string
+          description: БИК банка-получателя
+        bankAccountName4:
+          type: string
+          description: ФИО получателя
+    otherCryptoRequestData:
+      type: object
+      description: запрос на добавление стороннего кошелька
+      required:
+        - blockchain
+        - address
+      properties:
+        blockchain:
+          type: string
+          description: Platform name
+        addressContract:
+          type: string
+          description: Wallet’s contract address
+        adress:
+          type: string
+          description: Wallet's adress
+    RateResponseData:
+      type: object
+      description: Cryptocurrency to Zam/dollar rate
+      required:
+        - blockchain
+        - address
+        - currency
+        - rateToDollar
+        - rateToZam
+        - amount
+        - dateRate
+      properties:
+        blockchain:
+          type: string
+          description: Platform name
+        addressContract:
+          type: string
+          description: Wallet’s contract address
+        address:
+          type: string
+          description: Wallet's adress
+        currency:
+          type: string
+          description: Cryptocurrency shortname
+        rateToDollar:
+          type: string
+          description: Rate to dollar
+        rateToZam:
+          type: string
+          description: Rate to Zam
+        amount:
+          type: string
+          description: Possible amount to buy with dollars
+        dateRate:
+          type: string
+          description: Date:time of exchange rate actualization
